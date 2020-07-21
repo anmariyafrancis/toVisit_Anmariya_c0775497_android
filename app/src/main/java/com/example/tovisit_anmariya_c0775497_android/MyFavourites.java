@@ -1,23 +1,19 @@
 package com.example.tovisit_anmariya_c0775497_android;
 
-public class MyFavourites {
-    int id;
-    String placeName;
-    String address;
-    String date;
-    Double latitude;
-    Double longitude;
-    int isVisited;
+import java.io.Serializable;
 
+public class MyFavourites implements Serializable {
+    private int id;
+    private String name;
+    private Boolean isVisited;
+    private Double lat, lng;
 
-    public MyFavourites(int id, String placeName, String address, String date, Double latitude, Double longitude, int isVisited) {
-        this.id = id;
-        this.placeName = placeName;
-        this.address = address;
-        this.date = date;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public MyFavourites(int id, String name, Boolean isVisited, Double lat, Double lng) {
+        this.name = name;
         this.isVisited = isVisited;
+        this.lat = lat;
+        this.lng = lng;
+        this.id = id;
     }
 
     public int getId() {
@@ -28,51 +24,37 @@ public class MyFavourites {
         this.id = id;
     }
 
-    public String getPlaceName() {
-        return placeName;
+    public String getName() {
+        return name;
     }
 
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public int getIsVisited() {
+    public Boolean getVisited() {
         return isVisited;
     }
 
-    public void setIsVisited(int isVisited) {
-        this.isVisited = isVisited;
+    public void setVisited(Boolean visited) {
+        isVisited = visited;
     }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    //public static List<Place> MySavedPlaces = new ArrayList<>();
 }

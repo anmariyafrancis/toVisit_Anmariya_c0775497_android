@@ -1,5 +1,7 @@
 package com.example.tovisit_anmariya_c0775497_android;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,41 +10,44 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static android.content.ContentValues.TAG;
+
 public class ReadUrl {
-    public String readURL(String Url) throws IOException {
+    public String readURL(String myUrl) throws IOException {
 
-        String mydata = "";
+        Log.i(TAG, "readURL: ");
 
+        String data = "";
         InputStream inputStream = null;
-        HttpURLConnection urlConnection = null;
 
+        HttpURLConnection httpURLConnection = null;
 
         try {
-            URL url = new URL(Url);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
+            URL url = new URL(myUrl);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
 
-            inputStream = urlConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            inputStream = httpURLConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuffer stringBuffer = new StringBuffer();
 
+            //we need to read line by line
             String line = "";
-
-            while ((line = bufferedReader.readLine())!= null){
+            while((line = reader.readLine()) != null)
                 stringBuffer.append(line);
 
-            }
-            mydata = stringBuffer.toString();
-            bufferedReader.close();
+            data = stringBuffer.toString();
+            reader.close();
 
-        } catch (MalformedURLException e) {
+
+        } catch(MalformedURLException e){
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             inputStream.close();
-            urlConnection.disconnect();
+            httpURLConnection.disconnect();
         }
-        return mydata;
+
+        return data;
     }
 }

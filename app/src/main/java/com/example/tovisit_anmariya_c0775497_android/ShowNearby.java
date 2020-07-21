@@ -1,166 +1,79 @@
 package com.example.tovisit_anmariya_c0775497_android;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.widget.Toast;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 public class ShowNearby extends AsyncTask<Object,String,String> implements GoogleMap.OnInfoWindowClickListener {
-    Context context;
-    String type;
-    String placeData;
-    List<Address> addresses;
-    String address;
-    Geocoder geocoder;
-    DatabaseHelper mDatabase;
-    GoogleMap mMap;
-    String locationUrl;
-    Marker mMarker;
+    GoogleMap googleMap;
+    String placeData, url;
 
-    public GetNearPlaces(Context context) {
-        this.context = context;
-    }
 
     @Override
     protected String doInBackground(Object... objects) {
-        mMap = (GoogleMap) objects[0];
-        locationUrl = (String) objects[1];
-        type = (String)objects[2];
 
-        GetURL getURL = new GetURL();
-        try {
-            placeData = getURL.readURL(locationUrl);
 
-        } catch (IOException e) {
+        googleMap = (GoogleMap) objects[0];
+        url = (String) objects[1];
+
+        ReadUrl fetchURL= new ReadUrl();
+        try{
+            placeData = fetchURL.readURL(url);
+        } catch (IOException e){
             e.printStackTrace();
         }
-        //returning object of json
+
+
         return placeData;
     }
+
     @Override
     protected void onPostExecute(String s) {
-        List<HashMap<String,String>> naerbyplaceList = null;
-        ParseData parseData = new ParseData();
-        naerbyplaceList = parseData.parse(s);
-        showNearByPlace(naerbyplaceList);
+
+
+        List<HashMap<String, String>> nearByPlaceList = null;
+        ParseData parser = new ParseData();
+        nearByPlaceList = parser.parseData(s);
+
+
+        showNearbyPlaces(nearByPlaceList);
+
     }
 
-    private void showNearByPlace(List<HashMap<String,String>> nearPlacesList) {
-        for (int i = 0; i < nearPlacesList.size(); i++) {
-            MarkerOptions options = new MarkerOptions();
-            HashMap<String, String> mapPlace = nearPlacesList.get(i);
 
-            final String name = mapPlace.get("placeName");
-            final String vicinity = mapPlace.get("vicinity");
-            final double lat = Double.parseDouble(mapPlace.get("lat"));
-            final double longi = Double.parseDouble(mapPlace.get("lng"));
+    private void showNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList){
 
+        for(int i=0; i<nearbyPlacesList.size(); i++){
+            HashMap<String, String> place = nearbyPlacesList.get(i);
 
-            LatLng latLng = new LatLng(lat, longi);
-            options.position(latLng);
-            options.title(name);
-            options.snippet(vicinity);
+            String placeName = place.get("placeName");
+            String vicinity = place.get("vicinity");
+            double latitude = Double.parseDouble(place.get("lat"));
+            double longitude = Double.parseDouble(place.get("lng"));
+            String reference = place.get("reference");
 
-            mMap.setOnInfoWindowClickListener(this);
+            LatLng latLng = new LatLng(latitude, longitude);
 
-            switch (type){
+            //marker options
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .title(placeName + "\n" + vicinity)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+            googleMap.addMarker(markerOptions);
 
-                case "school":
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-                    break;
-                case "restaurant":
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-                    break;
-                case "museum":
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-                    break;
-                case "cafe":
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-                    break;
-                case "library":
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-                    break;
-                case "hospital":
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-                    break;
-                default:
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                    mMap.addMarker(options);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-                    break;
-            }
         }
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        System.out.println("MARKER: "+ marker.getTitle());
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("You want to add this place as Favourite?");
-        builder1.setCancelable(true);
-        mMarker = marker;
 
-        mDatabase = new DatabaseHelper(context);
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-                        String addDate = simpleDateFormat.format(calendar.getTime());
-                        if ( mDatabase.addFavPlace(mMarker.getTitle(), addDate, mMarker.getSnippet(), mMarker.getPosition().latitude, mMarker.getPosition().longitude)) {
-
-                            System.out.println("printed");
-                            Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
     }
 }

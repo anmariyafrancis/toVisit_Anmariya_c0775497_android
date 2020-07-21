@@ -1,132 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
-        <LinearLayout
-            android:orientation="horizontal" android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+    android:background="#EEF0ACF3"
+    tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/showMap"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:onClick="showMap"
+        android:src="@drawable/plus"
+        android:text="Go TO MAP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttton_default"
-                android:fontFamily="sans-serif-black"
-                android:onClick="btnClick"
-                android:text="Clear"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_getlocatiomn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="Current Location"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_restaurants"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="Restaurants"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_museum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="Museums"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_library"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="Library"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_school"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="School"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_cafe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="Cafe"
-                android:textColor="#E91E63" />
-
-            <Button
-                android:id="@+id/btn_hospital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/buttton_default"
-                android:onClick="btnClick"
-                android:text="Hospital"
-                android:textColor="#E91E63" />
-
-
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/locationList"
+        android:layout_width="395dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showMap"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <LinearLayout
-        android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="338dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:autoText="false"
+        android:background="#EEF0ACF3"
+        android:text="AddFavourites"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_Fav_place"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttton_default"
-            android:onClick="btnClick"
-            android:src="@android:drawable/ic_menu_myplaces"
-            android:text="Get Direction"
-            android:textColor="#E91E63"
-            android:tint="#E91E63" />
-    </LinearLayout>
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
